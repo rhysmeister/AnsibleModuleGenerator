@@ -1,0 +1,57 @@
+1. Modules combining status, enable and disable commands
+
+nodetool help | egrep 'status|enable|disable';
+
+disablebackup / enablebackup / statusbackup
+disablebinary / enablebinary / statusbinary
+disablegossip / enablegossip / statusgossip
+disablehandoff / enablehandoff / statushandoff
+disablethrift / enablethrift / statusthrift
+
+2. Modules combining enable and disable with no status available (perhaps an alternatvive way to obtain the status?)
+
+disableautocompaction / enableautocompaction
+
+3. Modules combining set and get
+
+nodetool help | egrep 'set|get' | awk '{print $1;}';
+
+getcompactionthreshold / setcompactionthreshold
+getcompactionthroughput / setcompactionthroughput
+getstreamthroughput / setstreamthroughput
+getinterdcstreamthroughput / setinterdcstreamthroughput
+gettraceprobability / settraceprobability
+
+4. Modules with only set
+
+setcachecapacity
+setcachekeystosave
+sethintedhandoffthrottlekb
+
+5. Other actions
+
+upgradesstables
+truncatehints
+stopdaemon
+stop
+scrub
+repair
+reloadtriggers
+rebuild
+rebuild_index
+move
+invalidatecountercache
+invalidatekeycache
+invalidaterowcache
+flush
+drain
+decommission
+cleanup
+bootstrap
+assassinate
+
+4. Other enable / disable type commands (use different terms but are the same in principal)
+
+pausehandoff / resumehandoff
+removenode / join
+clearsnapshot / listsnapshot
