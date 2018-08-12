@@ -8,7 +8,7 @@ disablegossip / enablegossip / statusgossip
 disablehandoff / enablehandoff / statushandoff
 disablethrift / enablethrift / statusthrift
 
-2. Modules combining enable and disable with no status available (perhaps an alternatvive way to obtain the status?)
+2. Modules combining enable and disable with no status available (perhaps an alternative way to obtain the status?)
 
 disableautocompaction / enableautocompaction
 
@@ -55,3 +55,14 @@ assassinate
 pausehandoff / resumehandoff
 removenode / join
 clearsnapshot / listsnapshot
+
+====================================
+
+module_type
+  type: integer
+    - 1: status|enable|disable type module. Ability to turn a feature on or off and check it's current value. For example the disablebackup / enablebackup / statusbackup set of nodetool commands
+    - 2: enable|disable type module. For example disableautocompaction / enableautocompaction
+    - 3: get|set type module. For example getcompactionthreshold / setcompactionthreshold.
+    - 4: set type modules. Single set command with no get.
+    - 5: other commands. Single commands. May come with various custom options, i.e. move <token>
+  description: indicates the type of module to be generated

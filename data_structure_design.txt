@@ -1,0 +1,28 @@
+This document outlines the data structures for the cassandra module generator.
+
+Modules with be defined in a list of dictionaries with each individual dictionary defining a specific module.
+
+Dictionary Specification:
+
+module_name                   - The name of the module. The generated module file with be called module_name.py.
+module_commands               - A dictionary containing the nodetool sub-commands needed for the module. This dictionary will be different for each module type depending on the format of the required sub-commands.
+status_responses              - A list of the possible responses from the status command.
+documentation_template        - A generic template for the Ansible module DOCUMENTATION variable.
+custom_documentation_template - A custom template for the Ansible module DOCUMENTATION variable. This will be appended to the DOCUMENTATION variable after documentation_template
+ansible_metadata              - Dictionary for the ANSIBLE_METADATA variable.
+custom_code                   - Dictionary containing the path to a file containing custom code and the point in the module to insert it.
+
+Example:
+
+{ "module_name": "cassandra_backup",
+  "module_commands": { "status": "statusbackup",
+                       "enable": "enablebackup",
+                       "disable": "disablebackup" },
+  "status_responses": [ "running", "not running": ],
+  "documentation_template": "/path/to/template.txt",
+  "custom_documentation_template": "/path/to/custom/template.txt",
+  "ansible_metadata": {'metadata_version': '1.1',
+                        'status': ['preview'],
+                        'supported_by': 'community'},
+  "custom_code": { "insert_at": 17,
+                   "custom_code": "/path/to/code.py" } }
