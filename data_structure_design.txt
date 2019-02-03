@@ -14,15 +14,15 @@ custom_code                   - Dictionary containing the path to a file contain
 
 Example:
 
-{ "module_name": "cassandra_backup",
-  "module_commands": { "status": "statusbackup",
-                       "enable": "enablebackup",
-                       "disable": "disablebackup" },
-  "status_responses": [ "running", "not running": ],
-  "documentation_template": "/path/to/template.txt",
-  "custom_documentation_template": "/path/to/custom/template.txt",
-  "ansible_metadata": {'metadata_version': '1.1',
-                        'status': ['preview'],
-                        'supported_by': 'community'},
-  "custom_code": { "insert_at": 17,
-                   "custom_code": "/path/to/code.py" } }
+---
+- modules:
+    - module_name: "cassandra_backup"
+      module_commands:
+        status: "statusbackup"
+        enable: "enablebackup"
+        disable: "disablebackup"
+      status_responses:
+        - "running"
+        - "not running"
+      documentation_template: "/path/to/template.txt"
+      custom_documentation_template: "/path/to/custom/template.txt"
