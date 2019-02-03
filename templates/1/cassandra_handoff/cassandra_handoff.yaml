@@ -1,0 +1,20 @@
+---
+module_name: "cassandra_handoff"
+author: "Rhys Campbell"
+email: "rhys.james.campbell@googlemail.com"
+version_added: "2.8"
+short_description: "A short test description"
+requirements: "nodetool"
+description:
+  - "A list of sentences."
+  - "That form a longer description"
+options: "Options go here"
+module_commands:
+  status: "statushandoff"
+  enable: "enablehandoff"
+  disable: "disablehandoff"
+status_responses:
+  active: "Hinted handoff is running"
+  inactive: "Hinted handoff is not running"
+documentation_template: "/path/to/template.txt"
+custom_documentation_template: "/path/to/custom/template.txt"

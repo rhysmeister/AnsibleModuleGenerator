@@ -8,6 +8,8 @@ disablegossip / enablegossip / statusgossip
 disablehandoff / enablehandoff / statushandoff
 disablethrift / enablethrift / statusthrift
 
+All return "running" or "not running: apart from handoff which returns "Hinted handoff is running" or "Hinted handoff is not running".
+
 2. Modules combining enable and disable with no status available (perhaps an alternative way to obtain the status?)
 
 disableautocompaction / enableautocompaction

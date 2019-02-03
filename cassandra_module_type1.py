@@ -1,49 +1,51 @@
-
 [[[cog
-import cog
+import cog, yaml
+header = yaml.load(open('templates/header.yaml', 'r'))
 cog.outl("#!/usr/bin/python")
 cog.outl("")
-cog.outl("# %s %s <%s>" % (year, author, email))
-cog.outl("# %s" % github_url)
+cog.outl("# %s %s <%s>" % (header['year'], header['author'], header['email']))
+cog.outl("# %s" % header['github_url'])
 ]]]
 [[[end]]]
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
-
 [[[cog
-import cog
-cog.outl("ANSIBLE_METADATA = %s" % ansible_metadata)
+import cog, yaml
+ansible_metadata = yaml.load(open('templates/ansible_metadata.yaml', 'r'))
+cog.outl("ANSIBLE_METADATA = { \"metadata_version\": \"%s\", \"status\": \"%s\", \"supported_by\": \"%s\" }" % (ansible_metadata['metadata_version'], ansible_metadata['status'], ansible_metadata['supported_by']))
 ]]]
 [[[end]]]
-
 DOCUMENTATION = '''
 ---
 [[[cog
-import cog
-cog.outl("module: %s" % module_name)
-cog.outl("author: \"%s (%s)\"" % (author, email))
-cog.outl("version_added: %s" % version_added)
-cog.outl("short_description: %s" % short_description)
-cog.outl("requirements: [ %s ]" % requirements)
+import cog, yaml
+module_file = 'templates/1/{0}/{0}.yaml'.format(module_name)
+ansible_module = yaml.load(open(module_file, 'r'))
+cog.outl("module: %s" % ansible_module['module_name'])
+cog.outl("author: \"%s (%s)\"" % (ansible_module['author'], ansible_module['email']))
+cog.outl("version_added: %s" % ansible_module['version_added'])
+cog.outl("short_description: %s" % ansible_module['short_description'])
+cog.outl("requirements: [ %s ]" % ansible_module['requirements'])
 cog.outl("description:")
-cog.outl("    - %s" % description)
-cog.outl("options: %s" % options)
+for item in ansible_module['description']:
+    cog.outl("\t- {0}".format(item))
+module_options = yaml.load(open('templates/1/{0}/{0}_options.yaml'.format(module_name), 'r'))
+cog.outl("options: %s" % module_options)
 ]]]
 [[[end]]]
 '''
 
 EXAMPLES = '''
 [[[cog
-import cog
-cog.outl("%s" % examples)
+import cog, yaml
+module_examples = yaml.load(open('templates/1/{0}/{0}_examples.yaml'.format(module_name), 'r'))
+cog.outl("%s" % module_examples)
 ]]]
 [[[end]]]
 '''
 
 from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
-
 
 class NodeToolCmd(object):
     """
@@ -122,9 +124,11 @@ def main():
 
     [[[cog
         import cog
-        cog.outl("status_command = '%s'" % status_command)
-        cog.outl("enable_command = '%s'" % enable_command)
-        cog.outl("disable_command = '%s'" % disable_command)
+        cog.outl("status_command = '%s'" % ansible_module['module_commands']['status'])
+        cog.outl("enable_command = '%s'" % ansible_module['module_commands']['enable'])
+        cog.outl("disable_command = '%s'" % ansible_module['module_commands']['disable'])
+        cog.outl("status_active = '%s'" % ansible_module['status_responses']['active'])
+        cog.outl("status_inactive = '%s'" % ansible_module['status_responses']['inactive'])
     ]]]
     [[[end]]]
 
@@ -137,17 +141,18 @@ def main():
     changed = False
 
     (rc, out, err) = n.status_command()
+    out = out.strip()
 
     if module.params['enable'] == False:
 
         if rc != 0:
             module.fail_json(name=status_command, msg=err)
         if module.check_mode:
-            if out == "running":
+            if out == status_active:
                 module.exit_json(changed=True)
             else:
                 module.exit_json(changed=False)
-        if out.strip() == "running":
+        if out == status_active:
             (rc, out, err) = n.disable_command()
             changed = True
         if rc != 0:
@@ -158,11 +163,11 @@ def main():
         if rc != 0:
             module.fail_json(name=status_command, msg=err)
         if module.check_mode:
-            if out == "not running":
+            if out == status_inactive:
                 module.exit_json(changed=True)
             else:
                 module.exit_json(changed=False)
-        if out.strip() == "not running":
+        if out == status_inactive:
             (rc, out, err) = n.enable_command()
             changed = True
         if rc is not None and rc != 0:
