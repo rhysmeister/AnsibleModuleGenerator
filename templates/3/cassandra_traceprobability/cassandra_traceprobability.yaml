@@ -1,0 +1,18 @@
+---
+module_name: "cassandra_traceprobability"
+author: "Rhys Campbell"
+email: "rhys.james.campbell@googlemail.com"
+version_added: "2.8"
+short_description: "Sets the trace probability."
+requirements: "nodetool"
+description:
+  - "Sets the trace probability."
+options: "Options go here"
+module_commands:
+  get_command: "gettraceprobability"
+  set_command: "settraceprobability"
+status_responses:
+  active: "running"
+  inactive: "not running"
+documentation_template: "/path/to/template.txt"
+custom_documentation_template: "/path/to/custom/template.txt"

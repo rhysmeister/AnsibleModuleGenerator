@@ -1,0 +1,7 @@
+- name: Ensure Cassandra Autocompaction is enabled
+  cassandra_autocompaction:
+    state: enabled
+
+- name: Ensure Cassandra Autocompaction is disabled
+  cassandra_autocompaction:
+    state: disabled

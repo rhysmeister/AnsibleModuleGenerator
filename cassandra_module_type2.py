@@ -20,7 +20,7 @@ DOCUMENTATION = '''
 ---
 [[[cog
 import cog, yaml
-module_file = 'templates/1/{0}/{0}.yaml'.format(module_name)
+module_file = 'templates/2/{0}/{0}.yaml'.format(module_name)
 ansible_module = yaml.load(open(module_file, 'r'))
 cog.outl("module: %s" % ansible_module['module_name'])
 cog.outl("author: \"%s (%s)\"" % (ansible_module['author'], ansible_module['email']))
@@ -30,7 +30,7 @@ cog.outl("requirements: [ %s ]" % ansible_module['requirements'])
 cog.outl("description:")
 for item in ansible_module['description']:
     cog.outl("\t- {0}".format(item))
-module_options = open('templates/1/{0}/{0}_options.yaml'.format(module_name), 'r')
+module_options = open('templates/2/{0}/{0}_options.yaml'.format(module_name), 'r')
 module_options = module_options.read()
 cog.out("options: \n%s" % module_options)
 ]]]
@@ -40,7 +40,7 @@ cog.out("options: \n%s" % module_options)
 EXAMPLES = '''
 [[[cog
 import cog
-module_examples = open('templates/1/{0}/{0}_examples.yaml'.format(module_name), 'r')
+module_examples = open('templates/2/{0}/{0}_examples.yaml'.format(module_name), 'r')
 module_examples = module_examples.read()
 cog.out("%s" % module_examples)
 ]]]
@@ -50,7 +50,7 @@ cog.out("%s" % module_examples)
 RETURN = '''
 [[[cog
 import cog
-module_return = open('templates/1/{0}/{0}_return.yaml'.format(module_name), 'r')
+module_return = open('templates/2/{0}/{0}_return.yaml'.format(module_name), 'r')
 module_return = module_return.read()
 cog.out("%s" % module_return)
 ]]]
@@ -95,23 +95,18 @@ class NodeToolCmd(object):
             print(cmd)
         return self.execute_command(cmd)
 
-class NodeTool3PairCommand(NodeToolCmd):
+class NodeTool2PairCommand(NodeToolCmd):
 
     """
     Inherits from the NodeToolCmd class. Adds the following methods;
 
-        - status_command
         - enable_command
         - disable_command
     """
 
     def __init__(self, module, status_command, enable_command, disable_command):
-        self.status_command = status_command
         self.enable_command = enable_command
         self.disable_command = disable_command
-
-    def status_command(self):
-        return self.nodetool_cmd(self.status_command)
 
     def enable_command(self):
         return self.nodetool_cmd(self.enable_command)
@@ -130,15 +125,14 @@ def main():
             state=dict(required=True, choices=['enabled', 'disabled'])),
             nodetool_path=dict(type='str', default=None, required=False),
             debug=dict(type='bool', default=False, required=False),
-        supports_check_mode=True)
+        ),
+        supports_check_mode=False
+    )
 
     [[[cog
         import cog
-        cog.outl("status_command = '%s'" % ansible_module['module_commands']['status'])
         cog.outl("enable_command = '%s'" % ansible_module['module_commands']['enable'])
         cog.outl("disable_command = '%s'" % ansible_module['module_commands']['disable'])
-        cog.outl("status_active = '%s'" % ansible_module['status_responses']['active'])
-        cog.outl("status_inactive = '%s'" % ansible_module['status_responses']['inactive'])
     ]]]
     [[[end]]]
 
@@ -153,37 +147,18 @@ def main():
     (rc, out, err) = n.status_command()
     out = out.strip()
 
-    if module.params['state'] == "disabled":
+    # We don't know if this has changed or not
+    if module.params['state'] == "enabled":
 
-        if rc != 0:
-            module.fail_json(name=enable_command, msg=err)
-        if module.check_mode:
-            if out == status_active:
-                module.exit_json(changed=True)
-            else:
-                module.exit_json(changed=False)
-        if out == status_active:
-            (rc, out, err) = n.disable_command()
-            changed = True
-        if rc != 0:
-            module.fail_json(name=disable_command, msg=err)
+        (rc, out, err) = n.enable_command()
+        out = out.strip()
 
-    elif module.params['state'] == "enabled":
+    elif module.params['state'] == "disabled":
 
-        if rc != 0:
-            module.fail_json(name=status_command, msg=err)
-        if module.check_mode:
-            if out == status_inactive:
-                module.exit_json(changed=True)
-            else:
-                module.exit_json(changed=False)
-        if out == status_inactive:
-            (rc, out, err) = n.enable_command()
-            changed = True
-        if rc is not None and rc != 0:
-            module.fail_json(name=enable_command, msg=err)
+        (rc, out, err) = n.disable_command()
+        out = out.strip()
 
-    result['changed'] = changed
+    result['changed'] = True
     if out:
         result['stdout'] = out
     if err:

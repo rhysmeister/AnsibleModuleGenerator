@@ -1,0 +1,18 @@
+---
+module_name: "cassandra_compactionthreshold"
+author: "Rhys Campbell"
+email: "rhys.james.campbell@googlemail.com"
+version_added: "2.8"
+short_description: "Sets the compaction threshold."
+requirements: "nodetool"
+description:
+  - "Sets the compaction threshold."
+options: "Options go here"
+module_commands:
+  get_command: "getcompactionthreshold"
+  set_command: "setcompactionthreshold"
+status_responses:
+  active: "running"
+  inactive: "not running"
+documentation_template: "/path/to/template.txt"
+custom_documentation_template: "/path/to/custom/template.txt"

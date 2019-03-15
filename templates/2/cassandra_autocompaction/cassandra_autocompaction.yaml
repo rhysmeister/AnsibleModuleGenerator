@@ -1,0 +1,19 @@
+---
+module_name: "cassandra_autocompaction"
+author: "Rhys Campbell"
+email: "rhys.james.campbell@googlemail.com"
+version_added: "2.8"
+short_description: "Enabled or disables autocompaction."
+requirements: "nodetool"
+description:
+  - "Enabled or disables autocompaction."
+options: "Options go here"
+module_commands:
+  status: "statusthrift"
+  enable: "enablethrift"
+  disable: "disablethrift"
+status_responses:
+  active: "running"
+  inactive: "not running"
+documentation_template: "/path/to/template.txt"
+custom_documentation_template: "/path/to/custom/template.txt"

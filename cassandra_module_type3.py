@@ -20,7 +20,7 @@ DOCUMENTATION = '''
 ---
 [[[cog
 import cog, yaml
-module_file = 'templates/1/{0}/{0}.yaml'.format(module_name)
+module_file = 'templates/3/{0}/{0}.yaml'.format(module_name)
 ansible_module = yaml.load(open(module_file, 'r'))
 cog.outl("module: %s" % ansible_module['module_name'])
 cog.outl("author: \"%s (%s)\"" % (ansible_module['author'], ansible_module['email']))
@@ -30,7 +30,7 @@ cog.outl("requirements: [ %s ]" % ansible_module['requirements'])
 cog.outl("description:")
 for item in ansible_module['description']:
     cog.outl("\t- {0}".format(item))
-module_options = open('templates/1/{0}/{0}_options.yaml'.format(module_name), 'r')
+module_options = open('templates/3/{0}/{0}_options.yaml'.format(module_name), 'r')
 module_options = module_options.read()
 cog.out("options: \n%s" % module_options)
 ]]]
@@ -40,7 +40,7 @@ cog.out("options: \n%s" % module_options)
 EXAMPLES = '''
 [[[cog
 import cog
-module_examples = open('templates/1/{0}/{0}_examples.yaml'.format(module_name), 'r')
+module_examples = open('templates/3/{0}/{0}_examples.yaml'.format(module_name), 'r')
 module_examples = module_examples.read()
 cog.out("%s" % module_examples)
 ]]]
@@ -50,7 +50,7 @@ cog.out("%s" % module_examples)
 RETURN = '''
 [[[cog
 import cog
-module_return = open('templates/1/{0}/{0}_return.yaml'.format(module_name), 'r')
+module_return = open('templates/3/{0}/{0}_return.yaml'.format(module_name), 'r')
 module_return = module_return.read()
 cog.out("%s" % module_return)
 ]]]
@@ -95,29 +95,24 @@ class NodeToolCmd(object):
             print(cmd)
         return self.execute_command(cmd)
 
-class NodeTool3PairCommand(NodeToolCmd):
+class NodeToolGetSetCommand(NodeToolCmd):
 
     """
     Inherits from the NodeToolCmd class. Adds the following methods;
 
-        - status_command
-        - enable_command
-        - disable_command
+        - get_command
+        - set_command
     """
 
-    def __init__(self, module, status_command, enable_command, disable_command):
-        self.status_command = status_command
-        self.enable_command = enable_command
-        self.disable_command = disable_command
+    def __init__(self, module, status_command, get_command, set_command):
+        self.get_command = get_command
+        self.set_command = set_command
 
-    def status_command(self):
-        return self.nodetool_cmd(self.status_command)
+    def get_command(self):
+        return self.nodetool_cmd(self.get_command)
 
-    def enable_command(self):
-        return self.nodetool_cmd(self.enable_command)
-
-    def disable_command(self):
-        return self.nodetool_cmd(self.disable_command)
+    def set_command(self):
+        return self.nodetool_cmd(self.set_command)
 
 def main():
     module = AnsibleModule(
@@ -127,22 +122,39 @@ def main():
             password=dict(type='str', no_log=True),
             passwordFile=dict(type='str', no_log=True),
             username=dict(type='str', no_log=True),
-            state=dict(required=True, choices=['enabled', 'disabled'])),
+            [[[cog
+                import cog
+                if ansible_module['module_name'] == "cassandra_compactionthreshold":
+                    cog.outl("keyspace=dict(type='str', required=True),")
+                    cog.outl("table=dict(type='str', required=True),")
+                    cog.outl("min=dict(type='int', required=True),")
+                    cog.outl("max=dict(type='int', required=True),")
+                else:
+                    cog.outl("value=dict(type='float', required=True),")
+            ]]]
+            [[[end]]]
             nodetool_path=dict(type='str', default=None, required=False),
             debug=dict(type='bool', default=False, required=False),
-        supports_check_mode=True)
+        ),
+        supports_check_mode=True
+    )
 
     [[[cog
         import cog
-        cog.outl("status_command = '%s'" % ansible_module['module_commands']['status'])
-        cog.outl("enable_command = '%s'" % ansible_module['module_commands']['enable'])
-        cog.outl("disable_command = '%s'" % ansible_module['module_commands']['disable'])
-        cog.outl("status_active = '%s'" % ansible_module['status_responses']['active'])
-        cog.outl("status_inactive = '%s'" % ansible_module['status_responses']['inactive'])
+        cog.outl("get_command = '%s'" % ansible_module['module_commands']['get_command'])
+        if ansible_module['module_name'] == "cassandra_compactionthreshold":
+            cog.outl("keyspace = module.params['keyspace']")
+            cog.outl("table = module.params['table']")
+            cog.outl("min = module.params['min']")
+            cog.outl("max = module.params['max']")
+            cog.outl("set_command = \"{0}".format(ansible_module['module_commands']['set_command']) + " {0} {1} {2} {3}\".format(keyspace, table, min, max)")
+        else:
+            cog.outl("set_command = \"{0}".format(ansible_module['module_commands']['set_command']) + " {0}\".format(module.params['value'])")
+
     ]]]
     [[[end]]]
 
-    n = NodeTool3PairCommand(module, status_command, enable_command, disable_command)
+    n = NodeTool3PairCommand(module, get_command, set_command)
 
     rc = None
     out = ''
@@ -150,38 +162,24 @@ def main():
     result = {}
     changed = False
 
-    (rc, out, err) = n.status_command()
+    (rc, out, err) = n.get_command()
     out = out.strip()
 
-    if module.params['state'] == "disabled":
+    if module.params['value'] == out:
 
         if rc != 0:
-            module.fail_json(name=enable_command, msg=err)
+            module.fail_json(name=get_command, msg=err)
+        changed = False
+    else:
+
         if module.check_mode:
-            if out == status_active:
-                module.exit_json(changed=True)
-            else:
-                module.exit_json(changed=False)
-        if out == status_active:
-            (rc, out, err) = n.disable_command()
             changed = True
-        if rc != 0:
-            module.fail_json(name=disable_command, msg=err)
-
-    elif module.params['state'] == "enabled":
-
-        if rc != 0:
-            module.fail_json(name=status_command, msg=err)
-        if module.check_mode:
-            if out == status_inactive:
-                module.exit_json(changed=True)
-            else:
-                module.exit_json(changed=False)
-        if out == status_inactive:
-            (rc, out, err) = n.enable_command()
+        else:
+            (rc, out, err) = n.set_command()
+            out = out.strip()
+            if rc != 0:
+                module.fail_json(name=set_command, msg=err)
             changed = True
-        if rc is not None and rc != 0:
-            module.fail_json(name=enable_command, msg=err)
 
     result['changed'] = changed
     if out:
