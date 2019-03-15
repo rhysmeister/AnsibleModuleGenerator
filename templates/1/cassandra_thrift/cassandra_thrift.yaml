@@ -3,11 +3,10 @@ module_name: "cassandra_thrift"
 author: "Rhys Campbell"
 email: "rhys.james.campbell@googlemail.com"
 version_added: "2.8"
-short_description: "A short test description"
+short_description: "Enabled or disables the Thrift server."
 requirements: "nodetool"
 description:
-  - "A list of sentences."
-  - "That form a longer description"
+  - "Enabled or disables the Thrift server."
 options: "Options go here"
 module_commands:
   status: "statusthrift"

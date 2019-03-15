@@ -3,11 +3,10 @@ module_name: "cassandra_backup"
 author: "Rhys Campbell"
 email: "rhys.james.campbell@googlemail.com"
 version_added: "2.8"
-short_description: "A short test description"
+short_description: "Enables or disables incremental backup."
 requirements: "nodetool"
 description:
-  - "A list of sentences."
-  - "That form a longer description"
+  - "Enables or disables incremental backup."
 options: "Options go here"
 module_commands:
   status: "statusbackup"

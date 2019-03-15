@@ -3,11 +3,10 @@ module_name: "cassandra_gossip"
 author: "Rhys Campbell"
 email: "rhys.james.campbell@googlemail.com"
 version_added: "2.8"
-short_description: "A short test description"
+short_description: "Enable or disable gossip."
 requirements: "nodetool"
 description:
-  - "A list of sentences."
-  - "That form a longer description"
+  - "Enable or disable gossip."
 options: "Options go here"
 module_commands:
   status: "statusgossip"

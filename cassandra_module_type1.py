@@ -30,17 +30,29 @@ cog.outl("requirements: [ %s ]" % ansible_module['requirements'])
 cog.outl("description:")
 for item in ansible_module['description']:
     cog.outl("\t- {0}".format(item))
-module_options = yaml.load(open('templates/1/{0}/{0}_options.yaml'.format(module_name), 'r'))
-cog.outl("options: %s" % module_options)
+module_options = open('templates/1/{0}/{0}_options.yaml'.format(module_name), 'r')
+module_options = module_options.read()
+cog.out("options: \n%s" % module_options)
 ]]]
 [[[end]]]
 '''
 
 EXAMPLES = '''
 [[[cog
-import cog, yaml
-module_examples = yaml.load(open('templates/1/{0}/{0}_examples.yaml'.format(module_name), 'r'))
-cog.outl("%s" % module_examples)
+import cog
+module_examples = open('templates/1/{0}/{0}_examples.yaml'.format(module_name), 'r')
+module_examples = module_examples.read()
+cog.out("%s" % module_examples)
+]]]
+[[[end]]]
+'''
+
+RETURN = '''
+[[[cog
+import cog
+module_return = open('templates/1/{0}/{0}_return.yaml'.format(module_name), 'r')
+module_return = module_return.read()
+cog.out("%s" % module_return)
 ]]]
 [[[end]]]
 '''
@@ -115,7 +127,7 @@ def main():
             password=dict(type='str', no_log=True),
             passwordFile=dict(type='str', no_log=True),
             username=dict(type='str', no_log=True),
-            enable=dict(type='bool', required=True),
+            state=dict(required=True, choices=['enabled', 'disabled'])),
             nodetool_path=dict(type='str', default=None, required=False),
             debug=dict(type='bool', default=False, required=False),
         ),
@@ -143,10 +155,10 @@ def main():
     (rc, out, err) = n.status_command()
     out = out.strip()
 
-    if module.params['enable'] == False:
+    if module.params['state'] == False:
 
         if rc != 0:
-            module.fail_json(name=status_command, msg=err)
+            module.fail_json(name=enable_command, msg=err)
         if module.check_mode:
             if out == status_active:
                 module.exit_json(changed=True)
@@ -158,7 +170,7 @@ def main():
         if rc != 0:
             module.fail_json(name=disable_command, msg=err)
 
-    elif module.params['enable'] == True:
+    elif module.params['state'] == True:
 
         if rc != 0:
             module.fail_json(name=status_command, msg=err)

@@ -3,11 +3,10 @@ module_name: "cassandra_binary"
 author: "Rhys Campbell"
 email: "rhys.james.campbell@googlemail.com"
 version_added: "2.8"
-short_description: "A short test description"
+short_description: "Enable/disable the binary protocol"
 requirements: "nodetool"
 description:
-  - "A list of sentences."
-  - "That form a longer description"
+  - Enable/disable the binary protocol, also known as the native transport.
 options: "Options go here"
 module_commands:
   status: "statusbinary"

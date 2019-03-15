@@ -1,1 +1,34 @@
----
+  host:
+    description:
+      - The hostname.
+    type: string
+    default: "localhost"
+  port:
+    description:
+      - The Cassandra TCP port.
+    type: int
+    default: 7199
+  password:
+    description:
+      - The password to authenticate with.
+    type: string
+  passwordFile:
+    description:
+      - Path to a file containing the password.
+    type: string
+  username:
+    description:
+      - The username to authenticate with.
+    type: string
+  state:
+    description:
+      - The required status
+    type: choices [ "enabled", "disabled" ]
+  nodetool_path:
+    description:
+      - The path to nodetool.
+    type: string
+  debug:
+    description:
+      - Enable additional debug output.
+    type: bool

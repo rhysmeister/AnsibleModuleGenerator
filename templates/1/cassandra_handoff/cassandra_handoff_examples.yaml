@@ -1,1 +1,7 @@
----
+- name: Ensure Cassandra handoff is enabled
+  cassandra_handoff:
+    state: enabled
+
+- name: Ensure Cassandra handoff is disabled
+  cassandra_handoff:
+    state: disabled

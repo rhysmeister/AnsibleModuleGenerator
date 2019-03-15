@@ -1,0 +1,4 @@
+cassandra_gossip:
+  description: The return state of the executed command.
+  returned: success
+  type: str

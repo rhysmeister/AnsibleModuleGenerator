@@ -1,1 +1,7 @@
----
+- name: Ensure Cassandra gossip is enabled
+  cassandra_gossip:
+    state: enabled
+
+- name: Ensure Cassandra gossip is disabled
+  cassandra_gossip:
+    state: disabled

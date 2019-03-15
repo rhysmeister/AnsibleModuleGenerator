@@ -1,1 +1,7 @@
----
+- name: Ensure Cassandra binary feature is enabled
+  cassandra_binary:
+    state: enabled
+
+- name: Ensure Cassandra binary feature is disabled
+  cassandra_binary:
+    state: disabled
