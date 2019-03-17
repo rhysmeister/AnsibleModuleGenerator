@@ -9,8 +9,8 @@ description:
   - "Sets the compaction throughput."
 options: "Options go here"
 module_commands:
-  get_command: "getcompactionthroughput"
-  set_command: "setcompactionthroughput"
+  get_cmd: "getcompactionthroughput"
+  set_cmd: "setcompactionthroughput"
 status_responses:
   active: "running"
   inactive: "not running"

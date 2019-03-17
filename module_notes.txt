@@ -18,11 +18,13 @@ disableautocompaction / enableautocompaction
 
 nodetool help | egrep 'set|get' | awk '{print $1;}';
 
-getcompactionthreshold / setcompactionthreshold
-getcompactionthroughput / setcompactionthroughput
-getstreamthroughput / setstreamthroughput
-getinterdcstreamthroughput / setinterdcstreamthroughput
-gettraceprobability / settraceprobability
+getcompactionthreshold / setcompactionthreshold   / keyspace, table, min, max
+getcompactionthroughput / setcompactionthroughput / value only
+getstreamthroughput / setstreamthroughput / value only
+getinterdcstreamthroughput / setinterdcstreamthroughput / value only
+gettraceprobability / settraceprobability / value only
+
+
 
 4. Modules with only set
 

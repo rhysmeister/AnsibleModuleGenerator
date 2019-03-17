@@ -18,5 +18,5 @@ cog.py -d -D module_name="cassandra_autocompaction" -o generated_modules/cassand
 cog.py -d -D module_name="cassandra_compactionthreshold" -o generated_modules/cassandra_compactionthreshold.py cassandra_module_type3.py
 cog.py -d -D module_name="cassandra_compactionthroughput" -o generated_modules/cassandra_compactionthroughput.py cassandra_module_type3.py
 cog.py -d -D module_name="cassandra_interdcstreamthroughput" -o generated_modules/cassandra_interdcstreamthroughput.py cassandra_module_type3.py
-cog.py -d -D module_name="cassandra_streamthroughput" -o generated_modules/cassandr_interdcstreamthroughput.py cassandra_module_type3.py
-cog.py -d -D module_name="cassandra_traceprobability" -o generated_modules/cassandr_traceprobability.py cassandra_module_type3.py
+cog.py -d -D module_name="cassandra_streamthroughput" -o generated_modules/cassandra_interdcstreamthroughput.py cassandra_module_type3.py
+cog.py -d -D module_name="cassandra_traceprobability" -o generated_modules/cassandra_traceprobability.py cassandra_module_type3.py

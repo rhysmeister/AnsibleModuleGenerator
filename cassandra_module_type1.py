@@ -105,44 +105,44 @@ class NodeTool3PairCommand(NodeToolCmd):
         - disable_command
     """
 
-    def __init__(self, module, status_command, enable_command, disable_command):
-        self.status_command = status_command
-        self.enable_command = enable_command
-        self.disable_command = disable_command
+    def __init__(self, module, status_cmd, enable_cmd, disable_cmd):
+        self.status_cmd = status_cmd
+        self.enable_cmd = enable_cmd
+        self.disable_cmd = disable_cmd
 
     def status_command(self):
-        return self.nodetool_cmd(self.status_command)
+        return self.nodetool_cmd(self.status_cmd)
 
     def enable_command(self):
-        return self.nodetool_cmd(self.enable_command)
+        return self.nodetool_cmd(self.enable_cmd)
 
     def disable_command(self):
-        return self.nodetool_cmd(self.disable_command)
+        return self.nodetool_cmd(self.disable_cmd)
 
 def main():
     module = AnsibleModule(
         argument_spec = dict(
-            host=dict(type='str', default='localhost'),
+            host=dict(type='str', default='$(hostname)'),
             port=dict(type='int', default=7199),
             password=dict(type='str', no_log=True),
             passwordFile=dict(type='str', no_log=True),
             username=dict(type='str', no_log=True),
-            state=dict(required=True, choices=['enabled', 'disabled'])),
+            state=dict(required=True, choices=['enabled', 'disabled']),
             nodetool_path=dict(type='str', default=None, required=False),
-            debug=dict(type='bool', default=False, required=False),
+            debug=dict(type='bool', default=False, required=False)),
         supports_check_mode=True)
 
     [[[cog
         import cog
-        cog.outl("status_command = '%s'" % ansible_module['module_commands']['status'])
-        cog.outl("enable_command = '%s'" % ansible_module['module_commands']['enable'])
-        cog.outl("disable_command = '%s'" % ansible_module['module_commands']['disable'])
+        cog.outl("status_cmd = '%s'" % ansible_module['module_commands']['status'])
+        cog.outl("enable_cmd = '%s'" % ansible_module['module_commands']['enable'])
+        cog.outl("disable_cmd = '%s'" % ansible_module['module_commands']['disable'])
         cog.outl("status_active = '%s'" % ansible_module['status_responses']['active'])
         cog.outl("status_inactive = '%s'" % ansible_module['status_responses']['inactive'])
     ]]]
     [[[end]]]
 
-    n = NodeTool3PairCommand(module, status_command, enable_command, disable_command)
+    n = NodeTool3PairCommand(module, status_cmd, enable_cmd, disable_cmd)
 
     rc = None
     out = ''

@@ -9,8 +9,8 @@ description:
   - "Sets the inter-dc stream throughput."
 options: "Options go here"
 module_commands:
-  get_command: "getcinterdcstreamthroughput"
-  set_command: "setinterdcstreamthroughput"
+  get_cmd: "getcinterdcstreamthroughput"
+  set_cmd: "setinterdcstreamthroughput"
 status_responses:
   active: "running"
   inactive: "not running"

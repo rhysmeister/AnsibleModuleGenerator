@@ -9,8 +9,8 @@ description:
   - "Sets the stream throughput."
 options: "Options go here"
 module_commands:
-  get_command: "getstreamthroughput"
-  set_command: "setstreamthroughput"
+  get_cmd: "getstreamthroughput"
+  set_cmd: "setstreamthroughput"
 status_responses:
   active: "running"
   inactive: "not running"

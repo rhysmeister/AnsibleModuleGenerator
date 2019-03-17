@@ -100,24 +100,24 @@ class NodeToolGetSetCommand(NodeToolCmd):
     """
     Inherits from the NodeToolCmd class. Adds the following methods;
 
-        - get_command
-        - set_command
+        - get_cmd
+        - set_cmd
     """
 
-    def __init__(self, module, status_command, get_command, set_command):
-        self.get_command = get_command
-        self.set_command = set_command
+    def __init__(self, module, get_cmd, set_cmd):
+        self.get_cmd = get_cmd
+        self.set_cmd = set_cmd
 
     def get_command(self):
-        return self.nodetool_cmd(self.get_command)
+        return self.nodetool_cmd(self.get_cmd)
 
     def set_command(self):
-        return self.nodetool_cmd(self.set_command)
+        return self.nodetool_cmd(self.set_cmd)
 
 def main():
     module = AnsibleModule(
         argument_spec = dict(
-            host=dict(type='str', default='localhost'),
+            host=dict(type='str', default='$(hostname)'),
             port=dict(type='int', default=7199),
             password=dict(type='str', no_log=True),
             passwordFile=dict(type='str', no_log=True),
@@ -141,20 +141,20 @@ def main():
 
     [[[cog
         import cog
-        cog.outl("get_command = '%s'" % ansible_module['module_commands']['get_command'])
+        cog.outl("get_cmd = '%s'" % ansible_module['module_commands']['get_cmd'])
         if ansible_module['module_name'] == "cassandra_compactionthreshold":
             cog.outl("keyspace = module.params['keyspace']")
             cog.outl("table = module.params['table']")
             cog.outl("min = module.params['min']")
             cog.outl("max = module.params['max']")
-            cog.outl("set_command = \"{0}".format(ansible_module['module_commands']['set_command']) + " {0} {1} {2} {3}\".format(keyspace, table, min, max)")
+            cog.outl("set_cmd = \"{0}".format(ansible_module['module_commands']['set_cmd']) + " {0} {1} {2} {3}\".format(keyspace, table, min, max)")
         else:
-            cog.outl("set_command = \"{0}".format(ansible_module['module_commands']['set_command']) + " {0}\".format(module.params['value'])")
+            cog.outl("set_cmd = \"{0}".format(ansible_module['module_commands']['set_cmd']) + " {0}\".format(module.params['value'])")
 
     ]]]
     [[[end]]]
 
-    n = NodeTool3PairCommand(module, get_command, set_command)
+    n = NodeTool3PairCommand(module, get_cmd, set_cmd)
 
     rc = None
     out = ''

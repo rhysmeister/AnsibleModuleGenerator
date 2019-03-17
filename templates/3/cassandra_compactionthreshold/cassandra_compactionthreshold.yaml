@@ -9,8 +9,8 @@ description:
   - "Sets the compaction threshold."
 options: "Options go here"
 module_commands:
-  get_command: "getcompactionthreshold"
-  set_command: "setcompactionthreshold"
+  get_cmd: "getcompactionthreshold"
+  set_cmd: "setcompactionthreshold"
 status_responses:
   active: "running"
   inactive: "not running"
