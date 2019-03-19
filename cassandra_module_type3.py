@@ -73,13 +73,17 @@ class NodeToolCmd(object):
         self.username               = module.params['username']
         self.nodetool_path          = module.params['nodetool_path']
         self.debug                  = module.params['debug']
+        if self.host is None:
+                self.host = socket.getfqdn()
 
     def execute_command(self, cmd):
         return self.module.run_command(cmd)
 
     def nodetool_cmd(self, sub_command):
-        if self.nodetool_path is not None and not self.nodetool_path.endswith('/'):
+        if self.nodetool_path is not None and len(self.nodetool_path) > 0 and not self.nodetool_path.endswith('/'):
             self.nodetool_path += '/'
+        else:
+                self.nodetool_path = ""
         cmd = "{0}nodetool --host {1} --port {2}".format(self.nodetool_path,
                                                          self.host,
                                                          self.port)
@@ -105,6 +109,7 @@ class NodeToolGetSetCommand(NodeToolCmd):
     """
 
     def __init__(self, module, get_cmd, set_cmd):
+        NodeToolCmd.__init__(self, module)
         self.get_cmd = get_cmd
         self.set_cmd = set_cmd
 
@@ -117,7 +122,7 @@ class NodeToolGetSetCommand(NodeToolCmd):
 def main():
     module = AnsibleModule(
         argument_spec = dict(
-            host=dict(type='str', default='$(hostname)'),
+            host=dict(type='str', default=None),
             port=dict(type='int', default=7199),
             password=dict(type='str', no_log=True),
             passwordFile=dict(type='str', no_log=True),
@@ -168,7 +173,7 @@ def main():
     if module.params['value'] == out:
 
         if rc != 0:
-            module.fail_json(name=get_command, msg=err)
+            module.fail_json(name=get_cmd, msg=err)
         changed = False
     else:
 
@@ -178,7 +183,7 @@ def main():
             (rc, out, err) = n.set_command()
             out = out.strip()
             if rc != 0:
-                module.fail_json(name=set_command, msg=err)
+                module.fail_json(name=set_cmd, msg=err)
             changed = True
 
     result['changed'] = changed

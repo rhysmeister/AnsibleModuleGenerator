@@ -58,6 +58,7 @@ cog.out("%s" % module_return)
 '''
 
 from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
+import socket
 
 class NodeToolCmd(object):
     """
@@ -73,13 +74,17 @@ class NodeToolCmd(object):
         self.username               = module.params['username']
         self.nodetool_path          = module.params['nodetool_path']
         self.debug                  = module.params['debug']
+        if self.host is None:
+                self.host = socket.getfqdn()
 
     def execute_command(self, cmd):
         return self.module.run_command(cmd)
 
     def nodetool_cmd(self, sub_command):
-        if self.nodetool_path is not None and not self.nodetool_path.endswith('/'):
+        if self.nodetool_path is not None and len(self.nodetool_path) > 0 and not self.nodetool_path.endswith('/'):
             self.nodetool_path += '/'
+        else:
+                self.nodetool_path = ""
         cmd = "{0}nodetool --host {1} --port {2}".format(self.nodetool_path,
                                                          self.host,
                                                          self.port)
@@ -106,6 +111,7 @@ class NodeTool3PairCommand(NodeToolCmd):
     """
 
     def __init__(self, module, status_cmd, enable_cmd, disable_cmd):
+        NodeToolCmd.__init__(self, module)
         self.status_cmd = status_cmd
         self.enable_cmd = enable_cmd
         self.disable_cmd = disable_cmd
@@ -122,7 +128,7 @@ class NodeTool3PairCommand(NodeToolCmd):
 def main():
     module = AnsibleModule(
         argument_spec = dict(
-            host=dict(type='str', default='$(hostname)'),
+            host=dict(type='str', default=None),
             port=dict(type='int', default=7199),
             password=dict(type='str', no_log=True),
             passwordFile=dict(type='str', no_log=True),
@@ -156,7 +162,7 @@ def main():
     if module.params['state'] == "disabled":
 
         if rc != 0:
-            module.fail_json(name=enable_command, msg=err)
+            module.fail_json(name=enable_cmd, msg=err)
         if module.check_mode:
             if out == status_active:
                 module.exit_json(changed=True)
@@ -166,12 +172,12 @@ def main():
             (rc, out, err) = n.disable_command()
             changed = True
         if rc != 0:
-            module.fail_json(name=disable_command, msg=err)
+            module.fail_json(name=disable_cmd, msg=err)
 
     elif module.params['state'] == "enabled":
 
         if rc != 0:
-            module.fail_json(name=status_command, msg=err)
+            module.fail_json(name=status_cmd, msg=err)
         if module.check_mode:
             if out == status_inactive:
                 module.exit_json(changed=True)
@@ -181,7 +187,7 @@ def main():
             (rc, out, err) = n.enable_command()
             changed = True
         if rc is not None and rc != 0:
-            module.fail_json(name=enable_command, msg=err)
+            module.fail_json(name=enable_cmd, msg=err)
 
     result['changed'] = changed
     if out:
