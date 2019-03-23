@@ -70,7 +70,7 @@ class NodeToolCmd(object):
         self.host                   = module.params['host']
         self.port                   = module.params['port']
         self.password               = module.params['password']
-        self.passwordFile           = module.params['passwordFile']
+        self.password_file           = module.params['password_file']
         self.username               = module.params['username']
         self.nodetool_path          = module.params['nodetool_path']
         self.debug                  = module.params['debug']
@@ -90,8 +90,8 @@ class NodeToolCmd(object):
                                                          self.port)
         if self.username is not None:
             cmd += " --username {0}".format(self.username)
-            if self.passwordFile is not None:
-                cmd += " --passwordFile {0}".format(self.passwordFile)
+            if self.password_file is not None:
+                cmd += " --password_file {0}".format(self.password_file)
             else:
                 cmd += " --password '{0}'".format(self.password)
         # The thing we want nodetool to execute
@@ -131,7 +131,7 @@ def main():
             host=dict(type='str', default=None),
             port=dict(type='int', default=7199),
             password=dict(type='str', no_log=True),
-            passwordFile=dict(type='str', no_log=True),
+            password_file=dict(type='str', no_log=True),
             username=dict(type='str', no_log=True),
             state=dict(required=True, choices=['enabled', 'disabled']),
             nodetool_path=dict(type='str', default=None, required=False),

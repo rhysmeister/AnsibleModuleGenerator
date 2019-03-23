@@ -12,7 +12,7 @@
     description:
       - The password to authenticate with.
     type: string
-  passwordFile:
+  password_file:
     description:
       - Path to a file containing the password.
     type: string
