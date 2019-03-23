@@ -91,7 +91,7 @@ class NodeToolCmd(object):
         if self.username is not None:
             cmd += " --username {0}".format(self.username)
             if self.password_file is not None:
-                cmd += " --password_file {0}".format(self.password_file)
+                cmd += " --password-file {0}".format(self.password_file)
             else:
                 cmd += " --password '{0}'".format(self.password)
         # The thing we want nodetool to execute
