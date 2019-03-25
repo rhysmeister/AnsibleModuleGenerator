@@ -58,6 +58,7 @@ cog.out("%s" % module_return)
 '''
 
 from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
+import socket
 
 class NodeToolCmd(object):
     """
@@ -135,7 +136,7 @@ def main():
                     cog.outl("min=dict(type='int', required=True),")
                     cog.outl("max=dict(type='int', required=True),")
                 else:
-                    cog.outl("value=dict(type='float', required=True),")
+                    cog.outl("value=dict(type='int', required=True),")
             ]]]
             [[[end]]]
             nodetool_path=dict(type='str', default=None, required=False),
@@ -159,7 +160,7 @@ def main():
     ]]]
     [[[end]]]
 
-    n = NodeTool3PairCommand(module, get_cmd, set_cmd)
+    n = NodeToolGetSetCommand(module, get_cmd, set_cmd)
 
     rc = None
     out = ''
@@ -170,10 +171,15 @@ def main():
     (rc, out, err) = n.get_command()
     out = out.strip()
 
+    [[[cog
+        import cog
+        cog.outl("get_response = \"{0}\"".format(ansible_module['status_response']))
+    ]]]
+    [[[end]]]
     if module.params['value'] == out:
 
         if rc != 0:
-            module.fail_json(name=get_cmd, msg=err)
+            module.fail_json(name=get_cmd, msg="{0}, {1}".format(err, out))
         changed = False
     else:
 
@@ -183,7 +189,7 @@ def main():
             (rc, out, err) = n.set_command()
             out = out.strip()
             if rc != 0:
-                module.fail_json(name=set_cmd, msg=err)
+                module.fail_json(name=set_cmd, msg="{0}, {1}".format(err, out))
             changed = True
 
     result['changed'] = changed

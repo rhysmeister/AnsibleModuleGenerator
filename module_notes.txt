@@ -10,7 +10,7 @@ disablethrift / enablethrift / statusthrift
 
 All return "running" or "not running: apart from handoff which returns "Hinted handoff is running" or "Hinted handoff is not running".
 
-2. Modules combining enable and disable with no status available (perhaps an alternative way to obtain the status?)
+2. Like above but references a keyspace and table. No status???
 
 disableautocompaction / enableautocompaction
 
@@ -23,8 +23,6 @@ getcompactionthroughput / setcompactionthroughput / value only
 getstreamthroughput / setstreamthroughput / value only
 getinterdcstreamthroughput / setinterdcstreamthroughput / value only
 gettraceprobability / settraceprobability / value only
-
-
 
 4. Modules with only set
 

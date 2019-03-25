@@ -11,8 +11,6 @@ options: "Options go here"
 module_commands:
   get_cmd: "getcompactionthroughput"
   set_cmd: "setcompactionthroughput"
-status_responses:
-  active: "running"
-  inactive: "not running"
+status_response: "Current compaction throughput: {0} MB/s"
 documentation_template: "/path/to/template.txt"
 custom_documentation_template: "/path/to/custom/template.txt"

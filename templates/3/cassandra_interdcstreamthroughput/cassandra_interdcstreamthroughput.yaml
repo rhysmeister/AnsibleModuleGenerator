@@ -11,8 +11,6 @@ options: "Options go here"
 module_commands:
   get_cmd: "getcinterdcstreamthroughput"
   set_cmd: "setinterdcstreamthroughput"
-status_responses:
-  active: "running"
-  inactive: "not running"
+status_response: ""
 documentation_template: "/path/to/template.txt"
 custom_documentation_template: "/path/to/custom/template.txt"

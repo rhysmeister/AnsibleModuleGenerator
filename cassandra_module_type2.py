@@ -58,6 +58,7 @@ cog.out("%s" % module_return)
 '''
 
 from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
+import socket
 
 class NodeToolCmd(object):
     """
