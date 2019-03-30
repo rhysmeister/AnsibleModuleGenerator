@@ -20,3 +20,6 @@ cog.py -d -D module_name="cassandra_compactionthroughput" -o generated_modules/c
 cog.py -d -D module_name="cassandra_interdcstreamthroughput" -o generated_modules/cassandra_interdcstreamthroughput.py cassandra_module_type3.py
 cog.py -d -D module_name="cassandra_streamthroughput" -o generated_modules/cassandra_interdcstreamthroughput.py cassandra_module_type3.py
 cog.py -d -D module_name="cassandra_traceprobability" -o generated_modules/cassandra_traceprobability.py cassandra_module_type3.py
+
+# Copy generated modules to ansible git repo from this project's root...
+cp generated_modules/*.py ../ansible/lib/ansible/modules/database/cassandra/

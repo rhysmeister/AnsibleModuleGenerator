@@ -159,10 +159,16 @@ def main():
         (rc, out, err) = n.enable_command()
         out = out.strip()
 
+        if rc != 0:
+            module.fail_json(name=enable_cmd, msg="{0}, {1}".format(err, out))
+
     elif module.params['state'] == "disabled":
 
         (rc, out, err) = n.disable_command()
         out = out.strip()
+
+        if rc != 0:
+            module.fail_json(name=enable_cmd, msg="{0}, {1}".format(err, out))
 
     result['changed'] = True
     if out:

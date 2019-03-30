@@ -162,7 +162,7 @@ def main():
     if module.params['state'] == "disabled":
 
         if rc != 0:
-            module.fail_json(name=enable_cmd, msg=err)
+            module.fail_json(name=enable_cmd, msg="{0}, {1}".format(err, out))
         if module.check_mode:
             if out == status_active:
                 module.exit_json(changed=True)
@@ -172,12 +172,12 @@ def main():
             (rc, out, err) = n.disable_command()
             changed = True
         if rc != 0:
-            module.fail_json(name=disable_cmd, msg=err)
+            module.fail_json(name=disable_cmd, msg="{0}, {1}".format(err, out))
 
     elif module.params['state'] == "enabled":
 
         if rc != 0:
-            module.fail_json(name=status_cmd, msg=err)
+            module.fail_json(name=status_cmd, msg="{0}, {1}".format(err, out))
         if module.check_mode:
             if out == status_inactive:
                 module.exit_json(changed=True)
@@ -187,7 +187,7 @@ def main():
             (rc, out, err) = n.enable_command()
             changed = True
         if rc is not None and rc != 0:
-            module.fail_json(name=enable_cmd, msg=err)
+            module.fail_json(name=enable_cmd, msg="{0}, {1}".format(err, out))
 
     result['changed'] = changed
     if out:

@@ -173,10 +173,10 @@ def main():
 
     [[[cog
         import cog
-        cog.outl("get_response = \"{0}\"".format(ansible_module['status_response']))
+        cog.outl("get_response = \"{0}\".format(module.params['value'])".format(ansible_module['status_response']))
     ]]]
     [[[end]]]
-    if module.params['value'] == out:
+    if get_response == out:
 
         if rc != 0:
             module.fail_json(name=get_cmd, msg="{0}, {1}".format(err, out))
