@@ -9,11 +9,5 @@ description:
   - "Enabled or disables autocompaction."
 options: "Options go here"
 module_commands:
-  status: "statusthrift"
-  enable: "enablethrift"
-  disable: "disablethrift"
-status_responses:
-  active: "running"
-  inactive: "not running"
-documentation_template: "/path/to/template.txt"
-custom_documentation_template: "/path/to/custom/template.txt"
+  enable: "enableautocompaction"
+  disable: "disableautocompaction"
