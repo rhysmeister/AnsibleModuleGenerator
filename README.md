@@ -23,7 +23,7 @@ cog.py -d -D module_name="cassandra_autocompaction" -o generated_modules/cassand
 cog.py -d -D module_name="cassandra_compactionthreshold" -o generated_modules/cassandra_compactionthreshold.py cassandra_module_type3.py
 cog.py -d -D module_name="cassandra_compactionthroughput" -o generated_modules/cassandra_compactionthroughput.py cassandra_module_type3.py
 cog.py -d -D module_name="cassandra_interdcstreamthroughput" -o generated_modules/cassandra_interdcstreamthroughput.py cassandra_module_type3.py
-cog.py -d -D module_name="cassandra_streamthroughput" -o generated_modules/cassandra_interdcstreamthroughput.py cassandra_module_type3.py
+cog.py -d -D module_name="cassandra_streamthroughput" -o generated_modules/cassandra_streamthroughput.py cassandra_module_type3.py
 cog.py -d -D module_name="cassandra_traceprobability" -o generated_modules/cassandra_traceprobability.py cassandra_module_type3.py
 ```
 
@@ -42,7 +42,7 @@ cp generated_modules/*.py ../ansible/lib/ansible/modules/database/cassandra/
 ** <module_name>_return.yaml - Ansible return documentation string.
 ** <module_name>.yaml - Yaml document that specifies the module. See below...
 
-module_name: Name of module to generate. Generally in the form cassandra_<function>
+module_name: Name of module to generate. Generally in the form cassandra_<function>.
 author: Author of module.
 email: Email of author.
 version_added: Ansible version the module was first added to. (string)
