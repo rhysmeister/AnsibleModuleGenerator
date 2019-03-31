@@ -12,5 +12,6 @@ module_commands:
   get_cmd: "gettraceprobability"
   set_cmd: "settraceprobability"
 status_response: "Current trace probability: {0}"
+module_type: "value_float"
 documentation_template: "/path/to/template.txt"
 custom_documentation_template: "/path/to/custom/template.txt"

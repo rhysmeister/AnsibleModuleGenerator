@@ -12,5 +12,6 @@ module_commands:
   get_cmd: "getcinterdcstreamthroughput"
   set_cmd: "setinterdcstreamthroughput"
 status_response: "Current inter-datacenter stream throughput: {0} Mb/s"
+module_type: "value_int"
 documentation_template: "/path/to/template.txt"
 custom_documentation_template: "/path/to/custom/template.txt"

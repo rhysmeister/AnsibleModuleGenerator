@@ -12,5 +12,6 @@ module_commands:
   get_cmd: "getcompactionthreshold"
   set_cmd: "setcompactionthreshold"
 status_response: ""
+module_type: "keyspace_table_min_max"
 documentation_template: "/path/to/template.txt"
 custom_documentation_template: "/path/to/custom/template.txt"

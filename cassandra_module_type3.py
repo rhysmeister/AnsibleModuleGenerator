@@ -130,13 +130,15 @@ def main():
             username=dict(type='str', no_log=True),
             [[[cog
                 import cog
-                if ansible_module['module_name'] == "cassandra_compactionthreshold":
+                if ansible_module['module_type'] == "keyspace_table_min_max":
                     cog.outl("keyspace=dict(type='str', required=True),")
                     cog.outl("table=dict(type='str', required=True),")
                     cog.outl("min=dict(type='int', required=True),")
                     cog.outl("max=dict(type='int', required=True),")
-                else:
+                elif ansible_module['module_type'] == "value_int":
                     cog.outl("value=dict(type='int', required=True),")
+                elif ansible_module['module_type'] == "value_float":
+                    cog.outl("value=dict(type='float', required=True),")
             ]]]
             [[[end]]]
             nodetool_path=dict(type='str', default=None, required=False),
