@@ -11,7 +11,7 @@ options: "Options go here"
 module_commands:
   get_cmd: "getcompactionthreshold"
   set_cmd: "setcompactionthreshold"
-status_response: ""
+status_response: "Current compaction thresholds for {0}/{1}: \\n min = {2},  max = {3}"
 module_type: "keyspace_table_min_max"
 documentation_template: "/path/to/template.txt"
 custom_documentation_template: "/path/to/custom/template.txt"

@@ -149,13 +149,13 @@ def main():
 
     [[[cog
         import cog
-        cog.outl("get_cmd = '%s'" % ansible_module['module_commands']['get_cmd'])
-        if ansible_module['module_name'] == "cassandra_compactionthreshold":
+        if ansible_module['module_type'] == "keyspace_table_min_max":
             cog.outl("keyspace = module.params['keyspace']")
             cog.outl("table = module.params['table']")
             cog.outl("min = module.params['min']")
             cog.outl("max = module.params['max']")
             cog.outl("set_cmd = \"{0}".format(ansible_module['module_commands']['set_cmd']) + " {0} {1} {2} {3}\".format(keyspace, table, min, max)")
+            cog.outl("get_cmd = \"{0}".format(ansible_module['module_commands']['get_cmd']) + " {0} {1}\".format(keyspace, table)")
         else:
             cog.outl("set_cmd = \"{0}".format(ansible_module['module_commands']['set_cmd']) + " {0}\".format(module.params['value'])")
 
@@ -175,7 +175,10 @@ def main():
 
     [[[cog
         import cog
-        cog.outl("get_response = \"{0}\".format(module.params['value'])".format(ansible_module['status_response']))
+        if ansible_module['module_type'] == "keyspace_table_min_max":
+            cog.outl("get_response = \"{0}\".format(keyspace, table, min, max)".format(ansible_module['status_response']))
+        else:
+            cog.outl("get_response = \"{0}\"".format(ansible_module['status_response']))
     ]]]
     [[[end]]]
     if get_response == out:
