@@ -158,7 +158,8 @@ def main():
             cog.outl("get_cmd = \"{0}".format(ansible_module['module_commands']['get_cmd']) + " {0} {1}\".format(keyspace, table)")
         else:
             cog.outl("set_cmd = \"{0}".format(ansible_module['module_commands']['set_cmd']) + " {0}\".format(module.params['value'])")
-
+            cog.outl("get_cmd = \"{0}\"".format(ansible_module['module_commands']['get_cmd']))
+            cog.outl("value = module.params['value']")
     ]]]
     [[[end]]]
 
@@ -178,7 +179,7 @@ def main():
         if ansible_module['module_type'] == "keyspace_table_min_max":
             cog.outl("get_response = \"{0}\".format(keyspace, table, min, max)".format(ansible_module['status_response']))
         else:
-            cog.outl("get_response = \"{0}\"".format(ansible_module['status_response']))
+            cog.outl("get_response = \"{0}\".format(value)".format(ansible_module['status_response']))
     ]]]
     [[[end]]]
     if get_response == out:
