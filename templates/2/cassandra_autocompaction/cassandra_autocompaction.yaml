@@ -11,3 +11,4 @@ options: "Options go here"
 module_commands:
   enable: "enableautocompaction"
   disable: "disableautocompaction"
+module_type: "keyspace_table"

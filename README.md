@@ -65,8 +65,14 @@ status_responses: Possible status responses from commands
 status_response: Status response for type 3 module command. String
 documentation_template: (redundant?)
 custom_documentation_template: (redundant?)
-module_type: Distinct from the main module type. Internal to type3 modules. Specifies module options...
+module_type: Distinct from the main module type.
+
+  Internal to type3 modules. Specifies module options...
 
   keyspace_table_min_max - Add keyspace (string), table (string), min (int) and max(int) options.
   value_int - Add value (int) option.
   value_float - Add value (float) option.
+
+  Internal to type2 modules...
+
+  keyspace_table - Adds keyspace and table string parameters.

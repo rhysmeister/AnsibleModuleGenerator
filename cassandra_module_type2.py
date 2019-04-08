@@ -128,9 +128,16 @@ def main():
             password=dict(type='str', no_log=True),
             password_file=dict(type='str', no_log=True),
             username=dict(type='str', no_log=True),
+            [[[cog
+                import cog
+                if ansible_module['module_type'] == "keyspace_table":
+                    cog.outl("keyspace=dict(type='str', required=True),")
+                    cog.outl("table=dict(type='str', required=True),")
+            ]]]
+            [[[end]]]
             state=dict(required=True, choices=['enabled', 'disabled']),
             nodetool_path=dict(type='str', default=None, required=False),
-            debug=dict(type='bool', default=False, required=False)),
+            debug=dict(type='bool', default=False, required=False),
         ),
         supports_check_mode=False
     )
@@ -142,16 +149,13 @@ def main():
     ]]]
     [[[end]]]
 
-    n = NodeTool3PairCommand(module, status_cmd, enable_cmd, disable_cmd)
+    n = NodeTool2PairCommand(module, enable_cmd, disable_cmd)
 
     rc = None
     out = ''
     err = ''
     result = {}
     changed = False
-
-    (rc, out, err) = n.status_command()
-    out = out.strip()
 
     # We don't know if this has changed or not
     if module.params['state'] == "enabled":
