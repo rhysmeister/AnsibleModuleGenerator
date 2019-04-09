@@ -162,7 +162,6 @@ def main():
     out = ''
     err = ''
     result = {}
-    changed = False
 
     # We don't know if this has changed or not
     if module.params['state'] == "enabled":

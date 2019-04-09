@@ -169,7 +169,6 @@ def main():
     out = ''
     err = ''
     result = {}
-    changed = False
 
     (rc, out, err) = n.get_command()
     out = out.strip()
@@ -195,7 +194,7 @@ def main():
     else:
 
         if module.check_mode:
-            changed = True
+            result['changed'] = True
         else:
             (rc, out, err) = n.set_command()
             out = out.strip()

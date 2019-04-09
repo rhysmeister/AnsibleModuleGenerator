@@ -154,7 +154,6 @@ def main():
     out = ''
     err = ''
     result = {}
-    changed = False
 
     (rc, out, err) = n.status_command()
     out = out.strip()
@@ -178,7 +177,7 @@ def main():
                 result['stdout'] = out
             if err:
                 result['stderr'] = err
-            changed = True
+            result['changed'] = True
         if rc != 0:
             module.fail_json(name=disable_cmd, msg="disable command failed", **result)
 
