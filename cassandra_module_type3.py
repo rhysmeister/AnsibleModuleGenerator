@@ -174,6 +174,11 @@ def main():
     (rc, out, err) = n.get_command()
     out = out.strip()
 
+    if out:
+        result['stdout'] = out
+    if err:
+        result['stderr'] = err
+
     [[[cog
         import cog
         if ansible_module['module_type'] == "keyspace_table_min_max":
@@ -185,8 +190,8 @@ def main():
     if get_response == out:
 
         if rc != 0:
-            module.fail_json(name=get_cmd, msg="{0}, {1}".format(err, out))
-        changed = False
+            result['changed'] = False
+            module.fail_json(name=get_cmd, msg="get command failed", **result)
     else:
 
         if module.check_mode:
@@ -194,15 +199,15 @@ def main():
         else:
             (rc, out, err) = n.set_command()
             out = out.strip()
+            if out:
+                result['stdout'] = out
+            if err:
+                result['stderr'] = err
             if rc != 0:
-                module.fail_json(name=set_cmd, msg="{0}, {1}".format(err, out))
-            changed = True
+                result['changed'] = False
+                module.fail_json(name=set_cmd, msg="set command failed", **result)
+            result['changed'] = True
 
-    result['changed'] = changed
-    if out:
-        result['stdout'] = out
-    if err:
-        result['stderr'] = err
     module.exit_json(**result)
 
 

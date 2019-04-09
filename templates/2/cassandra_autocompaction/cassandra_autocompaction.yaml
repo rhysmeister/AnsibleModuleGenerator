@@ -9,6 +9,6 @@ description:
   - "Enabled or disables autocompaction."
 options: "Options go here"
 module_commands:
-  enable: "enableautocompaction"
-  disable: "disableautocompaction"
+  enable: "enableautocompaction {0} {1}"
+  disable: "disableautocompaction {0} {1}"
 module_type: "keyspace_table"

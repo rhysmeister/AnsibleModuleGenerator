@@ -132,7 +132,7 @@ def main():
                 import cog
                 if ansible_module['module_type'] == "keyspace_table":
                     cog.outl("keyspace=dict(type='str', required=True),")
-                    cog.outl("table=dict(type='str', required=True),")
+                    cog.outl("table=dict(type='list', required=True),")
             ]]]
             [[[end]]]
             state=dict(required=True, choices=['enabled', 'disabled']),
@@ -144,8 +144,15 @@ def main():
 
     [[[cog
         import cog
-        cog.outl("enable_cmd = '%s'" % ansible_module['module_commands']['enable'])
-        cog.outl("disable_cmd = '%s'" % ansible_module['module_commands']['disable'])
+        if ansible_module['module_type'] == "keyspace_table":
+            cog.outl("keyspace = module.params['keyspace']")
+            cog.outl("table = ' '.join(module.params['table'])")
+            cog.outl("enable_cmd = '%s'.format(keyspace, table)" % ansible_module['module_commands']['enable'])
+            cog.outl("disable_cmd = '%s'.format(keyspace, table)" % ansible_module['module_commands']['disable'])
+        else:
+            cog.outl("enable_cmd = '%s'" % ansible_module['module_commands']['enable'])
+            cog.outl("disable_cmd = '%s'" % ansible_module['module_commands']['disable'])
+
     ]]]
     [[[end]]]
 
@@ -162,23 +169,28 @@ def main():
 
         (rc, out, err) = n.enable_command()
         out = out.strip()
+        result['changed'] = True
+        if out:
+            result['stdout'] = out
+        if err:
+            result['stderr'] = err
 
         if rc != 0:
-            module.fail_json(name=enable_cmd, msg="{0}, {1}".format(err, out))
+            module.fail_json(name=enable_cmd, msg="enable command failed", **result)
 
     elif module.params['state'] == "disabled":
 
         (rc, out, err) = n.disable_command()
         out = out.strip()
+        result['changed'] = True
+        if out:
+            result['stdout'] = out
+        if err:
+            result['stderr'] = err
 
         if rc != 0:
-            module.fail_json(name=enable_cmd, msg="{0}, {1}".format(err, out))
+            module.fail_json(name=disable_cmd, msg="disable command failed", **result)
 
-    result['changed'] = True
-    if out:
-        result['stdout'] = out
-    if err:
-        result['stderr'] = err
     module.exit_json(**result)
 
 
