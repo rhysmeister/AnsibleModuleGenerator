@@ -177,9 +177,10 @@ def main():
                 result['stdout'] = out
             if err:
                 result['stderr'] = err
-            result['changed'] = True
         if rc != 0:
             module.fail_json(name=disable_cmd, msg="disable command failed", **result)
+        else:
+            result['changed'] = True
 
     elif module.params['state'] == "enabled":
 

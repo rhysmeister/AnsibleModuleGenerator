@@ -32,31 +32,31 @@ sethintedhandoffthrottlekb
 
 5. Other actions
 
-upgradesstables
-truncatehints
-stopdaemon
-stop
-scrub
-repair
-reloadtriggers
-rebuild
-rebuild_index
-move
-invalidatecountercache
-invalidatekeycache
-invalidaterowcache
-flush
-drain
-decommission
-cleanup
-bootstrap
-assassinate
+upgradesstables - (keyspace, table)
+truncatehints - (endpoint)
+stopdaemon - (None)
+stop - (compaction_type)
+scrub - (jobs, no_validate, no_snapshot, reinsert_overflowed_ttl, skip_corrupted, keyspace, table)
+repair - (many)
+reloadtriggers - (None)
+rebuild - (data_centre, mode, keyspace, table)
+rebuild_index - (keyspace, table, index)
+move - (token)
+invalidatecountercache - (None)
+invalidatekeycache - (None)
+invalidaterowcache - (None)
+flush - (keyspace, table)
+drain - (None)
+decommission - (None)
+cleanup - (keyspace, table)
+bootstrap - (resume t/f boolean)
+assassinate - (ip_address)
 
-4. Other enable / disable type commands (use different terms but are the same in principal)
+6. Other enable / disable type commands (use different terms but are the same in principal)
 
 pausehandoff / resumehandoff
 removenode / join
-clearsnapshot / listsnapshot
+clearsnapshot / snapshot
 
 ====================================
 

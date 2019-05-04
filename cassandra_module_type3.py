@@ -205,7 +205,8 @@ def main():
             if rc != 0:
                 result['changed'] = False
                 module.fail_json(name=set_cmd, msg="set command failed", **result)
-            result['changed'] = True
+            else:
+                result['changed'] = True
 
     module.exit_json(**result)
 

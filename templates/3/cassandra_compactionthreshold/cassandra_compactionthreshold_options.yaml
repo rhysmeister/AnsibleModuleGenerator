@@ -1,0 +1,50 @@
+  host:
+    description:
+      - The hostname.
+    type: string
+    default: "localhost"
+  port:
+    description:
+      - The Cassandra TCP port.
+    type: int
+    default: 7199
+  password:
+    description:
+      - The password to authenticate with.
+    type: string
+  password_file:
+    description:
+      - Path to a file containing the password.
+    type: string
+  username:
+    description:
+      - The username to authenticate with.
+    type: string
+  keyspace:
+    description:
+      - The keyspace to adjust compaction thresholds for.
+    type: string
+    required: True
+  table:
+    description:
+      - The table to adjust compaction thresholds for.
+    type: string
+    required: True
+  min:
+    description:
+      - Sets the minimum number of SSTables to trigger a minor compaction when using SizeTieredCompactionStrategy or DateTieredCompactionStrategy.
+    type: int
+    required: True
+  max:
+    description:
+      - Sets the maximum number of SSTables to allow in a minor compaction when using SizeTieredCompactionStrategy or DateTieredCompactionStrategy.
+      type: int
+      required: True
+  nodetool_path:
+    description:
+      - The path to nodetool.
+    type: string
+  debug:
+    description:
+      - Enable additional debug output.
+    type: bool

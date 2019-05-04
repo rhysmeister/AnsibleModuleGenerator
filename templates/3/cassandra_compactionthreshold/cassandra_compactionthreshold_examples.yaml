@@ -1,0 +1,6 @@
+- name: Adjust compactionthreshold with module
+  cassandra_compactionthreshold:
+    keyspace: system
+    table: local
+    min: 8
+    max: 64

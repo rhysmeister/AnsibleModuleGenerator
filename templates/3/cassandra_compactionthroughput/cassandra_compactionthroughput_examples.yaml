@@ -1,0 +1,3 @@
+- name: Set compactionthroughput with module
+  cassandra_compactionthroughput:
+    value: 32

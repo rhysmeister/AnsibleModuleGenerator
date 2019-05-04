@@ -76,3 +76,17 @@ module_type: Distinct from the main module type.
   Internal to type2 modules...
 
   keyspace_table - Adds keyspace and table string parameters.
+
+==Run ansible integration tests==
+
+test/runner/ansible-test integration -v cassandra_autocompaction --docker centos6 --docker-privileged
+test/runner/ansible-test integration -v cassandra_backup --docker centos6 --docker-privileged
+test/runner/ansible-test integration -v cassandra_binary --docker centos6 --docker-privileged
+test/runner/ansible-test integration -v cassandra_compactionthreshold --docker centos6 --docker-privileged
+test/runner/ansible-test integration -v cassandra_compactionthroughput --docker centos6 --docker-privileged
+test/runner/ansible-test integration -v cassandra_gossip --docker centos6 --docker-privileged
+test/runner/ansible-test integration -v cassandra_handoff --docker centos6 --docker-privileged
+test/runner/ansible-test integration -v cassandra_interdcstreamthroughput --docker centos6 --docker-privileged
+test/runner/ansible-test integration -v cassandra_streamthroughput --docker centos6 --docker-privileged
+test/runner/ansible-test integration -v cassandra_thrift --docker centos6 --docker-privileged
+test/runner/ansible-test integration -v cassandra_traceprobability --docker centos6 --docker-privileged
