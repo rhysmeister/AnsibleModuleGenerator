@@ -31,15 +31,17 @@
     type: string
     required: True
   min:
-    description:
-      - Sets the minimum number of SSTables to trigger a minor compaction when using SizeTieredCompactionStrategy or DateTieredCompactionStrategy.
+    description: >
+      Sets the minimum number of SSTables to trigger a minor compaction when
+      using SizeTieredCompactionStrategy or DateTieredCompactionStrategy.
     type: int
     required: True
   max:
-    description:
-      - Sets the maximum number of SSTables to allow in a minor compaction when using SizeTieredCompactionStrategy or DateTieredCompactionStrategy.
-      type: int
-      required: True
+    description: >
+      Sets the maximum number of SSTables to allow in a minor compaction when
+      using SizeTieredCompactionStrategy or DateTieredCompactionStrategy.
+    type: int
+    required: True
   nodetool_path:
     description:
       - The path to nodetool.
