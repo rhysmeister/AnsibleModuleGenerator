@@ -7,13 +7,16 @@ cog.outl("# %s %s <%s>" % (header['year'], header['author'], header['email']))
 cog.outl("# %s" % header['github_url'])
 ]]]
 [[[end]]]
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# GNU General Public License v3.0+
+# (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 [[[cog
 import cog, yaml
+from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
+import socket
 ansible_metadata = yaml.load(open('templates/ansible_metadata.yaml', 'r'))
-cog.outl("ANSIBLE_METADATA = { \"metadata_version\": \"%s\", \"status\": \"%s\", \"supported_by\": \"%s\" }" % (ansible_metadata['metadata_version'], ansible_metadata['status'], ansible_metadata['supported_by']))
+cog.outl("ANSIBLE_METADATA = {\"metadata_version\": \"%s\", \"status\": \"%s\", \"supported_by\": \"%s\"}" % (ansible_metadata['metadata_version'], ansible_metadata['status'], ansible_metadata['supported_by']))
 ]]]
 [[[end]]]
 DOCUMENTATION = '''
@@ -29,10 +32,10 @@ cog.outl("short_description: %s" % ansible_module['short_description'])
 cog.outl("requirements: [ %s ]" % ansible_module['requirements'])
 cog.outl("description:")
 for item in ansible_module['description']:
-    cog.outl("\t- {0}".format(item))
+    cog.outl("    {0}".format(item))
 module_options = open('templates/1/{0}/{0}_options.yaml'.format(module_name), 'r')
 module_options = module_options.read()
-cog.out("options: \n%s" % module_options)
+cog.out("options:\n%s" % module_options)
 ]]]
 [[[end]]]
 '''
@@ -57,8 +60,6 @@ cog.out("%s" % module_return)
 [[[end]]]
 '''
 
-from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
-import socket
 
 class NodeToolCmd(object):
     """
@@ -66,14 +67,14 @@ class NodeToolCmd(object):
     """
 
     def __init__(self, module):
-        self.module                 = module
-        self.host                   = module.params['host']
-        self.port                   = module.params['port']
-        self.password               = module.params['password']
-        self.password_file           = module.params['password_file']
-        self.username               = module.params['username']
-        self.nodetool_path          = module.params['nodetool_path']
-        self.debug                  = module.params['debug']
+        self.module = module
+        self.host = module.params['host']
+        self.port = module.params['port']
+        self.password = module.params['password']
+        self.password_file = module.params['password_file']
+        self.username = module.params['username']
+        self.nodetool_path = module.params['nodetool_path']
+        self.debug = module.params['debug']
         if self.host is None:
                 self.host = socket.getfqdn()
 
@@ -81,7 +82,8 @@ class NodeToolCmd(object):
         return self.module.run_command(cmd)
 
     def nodetool_cmd(self, sub_command):
-        if self.nodetool_path is not None and len(self.nodetool_path) > 0 and not self.nodetool_path.endswith('/'):
+        if self.nodetool_path is not None and len(self.nodetool_path) > 0 and \
+                not self.nodetool_path.endswith('/'):
             self.nodetool_path += '/'
         else:
                 self.nodetool_path = ""
@@ -99,6 +101,7 @@ class NodeToolCmd(object):
         if self.debug:
             print(cmd)
         return self.execute_command(cmd)
+
 
 class NodeTool3PairCommand(NodeToolCmd):
 
@@ -125,9 +128,10 @@ class NodeTool3PairCommand(NodeToolCmd):
     def disable_command(self):
         return self.nodetool_cmd(self.disable_cmd)
 
+
 def main():
     module = AnsibleModule(
-        argument_spec = dict(
+        argument_spec=dict(
             host=dict(type='str', default=None),
             port=dict(type='int', default=7199),
             password=dict(type='str', no_log=True),
@@ -165,7 +169,8 @@ def main():
     if module.params['state'] == "disabled":
 
         if rc != 0:
-            module.fail_json(name=status_cmd, msg="status command failed", **result)
+            module.fail_json(name=status_cmd,
+                             msg="status command failed", **result)
         if module.check_mode:
             if out == status_active:
                 module.exit_json(changed=True, msg="check mode", **result)
@@ -178,14 +183,16 @@ def main():
             if err:
                 result['stderr'] = err
         if rc != 0:
-            module.fail_json(name=disable_cmd, msg="disable command failed", **result)
+            module.fail_json(name=disable_cmd,
+                             msg="disable command failed", **result)
         else:
             result['changed'] = True
 
     elif module.params['state'] == "enabled":
 
         if rc != 0:
-            module.fail_json(name=status_cmd, msg="status command failed", **result)
+            module.fail_json(name=status_cmd,
+                             msg="status command failed", **result)
         if module.check_mode:
             if out == status_inactive:
                 module.exit_json(changed=True, msg="check mode", **result)
@@ -198,7 +205,8 @@ def main():
             if err:
                 result['stderr'] = err
         if rc is not None and rc != 0:
-            module.fail_json(name=enable_cmd, msg="enable command failed", **result)
+            module.fail_json(name=enable_cmd,
+                             msg="enable command failed", **result)
         else:
             result['changed'] = True
 
