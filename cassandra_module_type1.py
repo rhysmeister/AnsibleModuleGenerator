@@ -9,11 +9,11 @@ cog.outl("# %s" % header['github_url'])
 [[[end]]]
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
+import socket
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
-import socket
 [[[cog
 import cog
 ansible_metadata = open('templates/ansible_metadata.yaml', 'r')
