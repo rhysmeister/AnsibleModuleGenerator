@@ -11,13 +11,15 @@ cog.outl("# %s" % header['github_url'])
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
-[[[cog
-import cog, yaml
+
 from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
 import socket
 
-ansible_metadata = yaml.load(open('templates/ansible_metadata.yaml', 'r'))
-cog.outl("ANSIBLE_METADATA = {\"metadata_version\": \"%s\", \"status\": \"%s\", \"supported_by\": \"%s\"}" % (ansible_metadata['metadata_version'], ansible_metadata['status'], ansible_metadata['supported_by']))
+[[[cog
+import cog
+ansible_metadata = open('templates/ansible_metadata.yaml', 'r')
+am = ansible_metadata.read()
+cog.outl("ANSIBLE_METADATA =\\%s" % (am))
 ]]]
 [[[end]]]
 DOCUMENTATION = '''

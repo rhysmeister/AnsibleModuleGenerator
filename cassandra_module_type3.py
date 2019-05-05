@@ -11,13 +11,15 @@ cog.outl("# %s" % header['github_url'])
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
-[[[cog
-import cog, yaml
+
 from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
 import socket
 
-ansible_metadata = yaml.load(open('templates/ansible_metadata.yaml', 'r'))
-cog.outl("ANSIBLE_METADATA = {\"metadata_version\": \"%s\", \"status\": \"%s\", \"supported_by\": \"%s\"}" % (ansible_metadata['metadata_version'], ansible_metadata['status'], ansible_metadata['supported_by']))
+[[[cog
+import cog
+ansible_metadata = open('templates/ansible_metadata.yaml', 'r')
+am = ansible_metadata.read()
+cog.outl("ANSIBLE_METADATA =\\%s" % (am))
 ]]]
 [[[end]]]
 DOCUMENTATION = '''
@@ -159,7 +161,10 @@ def main():
             cog.outl("table = module.params['table']")
             cog.outl("min = module.params['min']")
             cog.outl("max = module.params['max']")
-            cog.outl("set_cmd = \"{0}".format(ansible_module['module_commands']['set_cmd']) + " {0} {1} {2} {3}\".format(keyspace, table, min, max)")
+            cog.outl("set_cmd = \"{0}".format(ansible_module['module_commands']['set_cmd']) + " {0} {1} {2} {3}\".format(keyspace,")
+            cog.outl("                                                          table,")
+            cog.outl("                                                          min,")
+            cog.outl("                                                          max)")
             cog.outl("get_cmd = \"{0}".format(ansible_module['module_commands']['get_cmd']) + " {0} {1}\".format(keyspace, table)")
         else:
             cog.outl("set_cmd = \"{0}".format(ansible_module['module_commands']['set_cmd']) + " {0}\".format(module.params['value'])")
