@@ -1,8 +1,8 @@
 ---
 module_name: "cassandra_binary"
-author: "Rhys Campbell"
+author: Rhys Campbell (@rhysmeister)
 email: "rhys.james.campbell@googlemail.com"
-version_added: "2.8"
+version_added: "2.9"
 short_description: "Enables or disables the binary protocol."
 requirements: "nodetool"
 description:

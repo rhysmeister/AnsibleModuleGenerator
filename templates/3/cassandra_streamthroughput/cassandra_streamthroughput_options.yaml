@@ -1,8 +1,7 @@
   host:
     description:
       - The hostname.
-    type: string
-    default: "localhost"
+    type: str
   port:
     description:
       - The Cassandra TCP port.
@@ -11,15 +10,15 @@
   password:
     description:
       - The password to authenticate with.
-    type: string
+    type: str
   password_file:
     description:
       - Path to a file containing the password.
-    type: string
+    type: str
   username:
     description:
       - The username to authenticate with.
-    type: string
+    type: str
   value:
     description:
       - MB value to set stream throughput to.
@@ -28,7 +27,7 @@
   nodetool_path:
     description:
       - The path to nodetool.
-    type: string
+    type: str
   debug:
     description:
       - Enable additional debug output.

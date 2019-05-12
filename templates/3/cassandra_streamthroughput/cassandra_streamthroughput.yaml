@@ -1,8 +1,8 @@
 ---
 module_name: "cassandra_streamthroughput"
-author: "Rhys Campbell"
+author: Rhys Campbell (@rhysmeister)
 email: "rhys.james.campbell@googlemail.com"
-version_added: "2.8"
+version_added: "2.9"
 short_description: "Sets the stream throughput."
 requirements: "nodetool"
 description:

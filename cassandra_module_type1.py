@@ -10,15 +10,13 @@ cog.outl("# %s" % header['github_url'])
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import absolute_import, division, print_function
-from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
-import socket
-__metaclass__ = type
+
 
 [[[cog
 import cog
 ansible_metadata = open('templates/ansible_metadata.yaml', 'r')
 am = ansible_metadata.read()
-cog.outl("ANSIBLE_METADATA =\\%s" % (am))
+cog.outl("ANSIBLE_METADATA = %s" % (am))
 ]]]
 [[[end]]]
 DOCUMENTATION = '''
@@ -28,7 +26,7 @@ import cog, yaml
 module_file = 'templates/1/{0}/{0}.yaml'.format(module_name)
 ansible_module = yaml.load(open(module_file, 'r'))
 cog.outl("module: %s" % ansible_module['module_name'])
-cog.outl("author: \"%s (%s)\"" % (ansible_module['author'], ansible_module['email']))
+cog.outl("author: %s" % (ansible_module['author']))
 cog.outl("version_added: %s" % ansible_module['version_added'])
 cog.outl("short_description: %s" % ansible_module['short_description'])
 cog.outl("requirements: [ %s ]" % ansible_module['requirements'])
@@ -63,6 +61,11 @@ cog.out("%s" % module_return)
 '''
 
 
+from ansible.module_utils.basic import AnsibleModule, load_platform_subclass
+import socket
+__metaclass__ = type
+
+
 class NodeToolCmd(object):
     """
     This is a generic NodeToolCmd class for building nodetool commands
@@ -78,7 +81,7 @@ class NodeToolCmd(object):
         self.nodetool_path = module.params['nodetool_path']
         self.debug = module.params['debug']
         if self.host is None:
-                self.host = socket.getfqdn()
+            self.host = socket.getfqdn()
 
     def execute_command(self, cmd):
         return self.module.run_command(cmd)
@@ -88,7 +91,7 @@ class NodeToolCmd(object):
                 not self.nodetool_path.endswith('/'):
             self.nodetool_path += '/'
         else:
-                self.nodetool_path = ""
+            self.nodetool_path = ""
         cmd = "{0}nodetool --host {1} --port {2}".format(self.nodetool_path,
                                                          self.host,
                                                          self.port)

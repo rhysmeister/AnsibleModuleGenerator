@@ -1,8 +1,8 @@
 ---
 module_name: "cassandra_traceprobability"
-author: "Rhys Campbell"
+author: Rhys Campbell (@rhysmeister)
 email: "rhys.james.campbell@googlemail.com"
-version_added: "2.8"
+version_added: "2.9"
 short_description: "Sets the trace probability."
 requirements: "nodetool"
 description:
