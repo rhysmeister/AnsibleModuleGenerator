@@ -3,10 +3,10 @@ module_name: "cassandra_thrift"
 author: "Rhys Campbell"
 email: "rhys.james.campbell@googlemail.com"
 version_added: "2.8"
-short_description: "Enabled or disables the Thrift server."
+short_description: "Enables or disables the Thrift server."
 requirements: "nodetool"
 description:
-  - "Enabled or disables the Thrift server."
+  - "Enables or disables the Thrift server."
 options: "Options go here"
 module_commands:
   status: "statusthrift"

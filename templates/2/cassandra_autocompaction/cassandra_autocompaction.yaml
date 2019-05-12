@@ -3,10 +3,10 @@ module_name: "cassandra_autocompaction"
 author: "Rhys Campbell"
 email: "rhys.james.campbell@googlemail.com"
 version_added: "2.8"
-short_description: "Enabled or disables autocompaction."
+short_description: "Enables or disables autocompaction."
 requirements: "nodetool"
 description:
-  - "Enabled or disables autocompaction."
+  - "Enables or disables autocompaction."
 options: "Options go here"
 module_commands:
   enable: "enableautocompaction {0} {1}"
