@@ -177,7 +177,7 @@ def main():
             if out == status_active:
                 module.exit_json(changed=True, msg="check mode", **result)
             else:
-                module.exit_json(changed=False,  msg="check mode", **result)
+                module.exit_json(changed=False, msg="check mode", **result)
         if out == status_active:
             (rc, out, err) = n.disable_command()
             if out:
